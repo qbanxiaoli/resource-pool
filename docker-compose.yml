@@ -1,0 +1,19 @@
+version: '3'
+services:
+  # 服务名
+  resource-pool:
+    # 指定使用当前目录下的dockerfile文件构建镜像
+    build: .
+    # 镜像名
+    image: resource-pool
+    # 设置开机启动和自动重启
+    restart: always
+    # 容器名
+    container_name: resource-pool
+    # 环境变量
+    environment:
+      # 设置容器时间为东八区
+      TZ: Asia/Shanghai
+    # 将宿主机的80端口映射到容器内的80端口
+    ports:
+    - 80:80
