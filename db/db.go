@@ -26,6 +26,15 @@ func connectMysql() *sqlx.DB {
 	return Db
 }
 
+func GetResourceById(id int) model.Result {
+	var Db = connectMysql()
+	defer Db.Close()
+	data := dao.GetResourceById(Db, id)
+	result := model.NewDefaultResult()
+	result.Data = data
+	return result
+}
+
 func GetResourceTotal(currentPage int, pageSize int) model.Result {
 	var Db = connectMysql()
 	defer Db.Close()
@@ -38,3 +47,4 @@ func GetResourceTotal(currentPage int, pageSize int) model.Result {
 	result.Data = str
 	return result
 }
+

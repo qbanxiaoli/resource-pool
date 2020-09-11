@@ -10,6 +10,15 @@ import (
 
 func Init(webserver *gin.Engine) {
 
+	// 根据id查询服务器使用情况
+	webserver.GET("/getResourceById", func(context *gin.Context) {
+		id, err := strconv.Atoi(context.Query("id"))
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		context.JSON(http.StatusOK, db.GetResourceById(id))
+	})
+
 	// 查询资源池使用情况
 	webserver.GET("/getResourceTotal", func(context *gin.Context) {
 		currentPage := context.Query("currentPage")
