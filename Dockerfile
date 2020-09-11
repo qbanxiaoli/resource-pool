@@ -1,5 +1,5 @@
 # 以golang官方镜像为基础镜像
-FROM golang
+FROM golang:alpine
 # 设置工作目录，命令都在该目录下执行
 WORKDIR /resource-pool
 # 把项目拷贝到镜像中

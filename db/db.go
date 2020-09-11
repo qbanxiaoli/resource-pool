@@ -1,9 +1,12 @@
-package main
+package db
 
 import (
+	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"resource-pool/dao"
+	"resource-pool/model"
 )
 
 var (
@@ -24,30 +27,18 @@ func connectMysql() *sqlx.DB {
 	return Db
 }
 
-func queryData(Db *sqlx.DB) {
-	rows, err := Db.Query("select * from resource_pool")
+func GetResourceTotal() model.Result {
+	var Db = connectMysql()
+	defer Db.Close()
+	data := dao.GetResourceTotal(Db)
+	result := model.NewDefaultResult()
+	result.Data = data
+	str, err := json.Marshal(*data)
 	if err != nil {
 		fmt.Printf(err.Error())
-		return
 	}
-	for rows.Next() {
-		//定义变量接收查询数据
-		var uid int
-		var create_time, username, password, department, email string
-
-		err := rows.Scan(&uid, &create_time, &username, &password, &department, &email)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		fmt.Println(uid, create_time, username, password, department, email)
-	}
-
-	//关闭结果集（释放连接）
-	_ = rows.Close()
-}
-
-func main() {
-	var Db = connectMysql()
-	queryData(Db)
-	defer Db.Close()
+	fmt.Println(string(str))
+	fmt.Println(result.Data)
+	fmt.Println(result)
+	return result
 }
