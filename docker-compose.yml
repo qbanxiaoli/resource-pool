@@ -1,15 +1,15 @@
 version: '3'
 services:
   # 服务名
-  resource-pool:
+  resource-pool-back:
     # 指定使用当前目录下的dockerfile文件构建镜像
     build: .
     # 镜像名
-    image: resource-pool
+    image: resource-pool-back
     # 设置开机启动和自动重启
     restart: always
     # 容器名
-    container_name: resource-pool
+    container_name: resource-pool-back
     # 环境变量
     environment:
       # 设置容器时间为东八区
