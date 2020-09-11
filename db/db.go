@@ -1,7 +1,6 @@
 package db
 
 import (
-	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -22,23 +21,20 @@ func connectMysql() *sqlx.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s", userName, password, ipAddress, port, dbName, charset)
 	Db, err := sqlx.Open("mysql", dsn)
 	if err != nil {
-		fmt.Printf("mysql connect failed, detail is [%v]", err.Error())
+		fmt.Println("mysql connect failed, detail is [%v]", err.Error())
 	}
 	return Db
 }
 
-func GetResourceTotal() model.Result {
+func GetResourceTotal(currentPage int, pageSize int) model.Result {
 	var Db = connectMysql()
 	defer Db.Close()
-	data := dao.GetResourceTotal(Db)
+	data := dao.GetResourceTotal(Db, currentPage, pageSize)
 	result := model.NewDefaultResult()
-	result.Data = data
-	str, err := json.Marshal(*data)
-	if err != nil {
-		fmt.Printf(err.Error())
+	var str []interface{}
+	for i := data.Front(); i != nil; i = i.Next() {
+		str = append(str, i.Value)
 	}
-	fmt.Println(string(str))
-	fmt.Println(result.Data)
-	fmt.Println(result)
+	result.Data = str
 	return result
 }

@@ -7,8 +7,8 @@ import (
 	"resource-pool/model"
 )
 
-func GetResourceTotal(Db *sqlx.DB) *list.List {
-	rows, err := Db.Query("select * from resource_total limit 10")
+func GetResourceTotal(Db *sqlx.DB, currentPage int, pageSize int) *list.List {
+	rows, err := Db.Query("select * from resource_total order by id desc limit ? offset ?", pageSize, (currentPage - 1) * pageSize)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return nil
