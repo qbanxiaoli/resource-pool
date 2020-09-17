@@ -20,7 +20,7 @@ func Init(webserver *gin.Engine) {
 	})
 
 	// 查询资源池使用情况
-	webserver.GET("/getResourceTotal", func(context *gin.Context) {
+	webserver.POST("/getResourceName", func(context *gin.Context) {
 		currentPage := context.Query("currentPage")
 		pageSize := context.Query("pageSize")
 		if currentPage == "" {
@@ -37,7 +37,7 @@ func Init(webserver *gin.Engine) {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		context.JSON(http.StatusOK, db.GetResourceTotal(page, size))
+		context.JSON(http.StatusOK, db.GetResourceName(page, size))
 	})
 
 }
